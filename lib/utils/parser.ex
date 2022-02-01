@@ -77,5 +77,8 @@ defmodule Yaki.Parser do
     |> ignore(string(")"))
     |> tag(:link)
 
-  defparsec(:from_md, choice([md_image, md_italic, md_bold, md_link, heading, atx_end]))
+  text =
+    ascii_string([not: ?\n], min: 1) |> tag(:paragraph)
+
+  defparsec(:from_md, choice([md_image, md_italic, md_bold, md_link, heading, atx_end, text]))
 end
