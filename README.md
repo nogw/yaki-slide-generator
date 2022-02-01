@@ -1,0 +1,1 @@
+# yaki-slide-generator
