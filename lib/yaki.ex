@@ -3,8 +3,12 @@ defmodule Yaki do
 end
 
 inputs = [
+  "###### other text",
+  "##### other text",
+  "#### other text",
   "### other text",
-  "### ocaml",
+  "## other text",
+  "# other text",
   "_nic_",
   "*oomaga*",
   "![imageofnic](image)",
@@ -12,5 +16,10 @@ inputs = [
 ]
 
 for input <- inputs do
-  IO.inspect(Yaki.Parser.from_md(input) |> elem(1) |> Enum.at(0) |> elem(0))
+  md = Yaki.Parser.from_md(input)
+  |> elem(1)
+  |> Enum.at(0)
+
+  { a, b } = md
+  Yaki.Generate.to_html(a, b)
 end
