@@ -1,8 +1,6 @@
 # My Project
-
-_teste_
-_oomaga_
-![imageofnic](image)
-teste teste
-[nics](http)
-[image of nic](image)
+how to make better slides?
+[learn here](https://somelink.com)
+*test*
+*oomaga*
+![any image](image)

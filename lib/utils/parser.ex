@@ -1,8 +1,9 @@
-defmodule Yaki.Parser do
+defmodule SlidesWeb.Parser do
   import NimbleParsec
 
   @space 0x0020
   @tab 0x009
+  @newline 10
 
   spacechar = utf8_char([@space, @tab])
   sp = optional(times(spacechar, min: 1))
@@ -54,6 +55,11 @@ defmodule Yaki.Parser do
     |> concat(ascii_string([not: ?]], min: 1))
     |> ignore(string("]"))
 
+  md_bloco =
+    ignore(string("("))
+    |> concat(ascii_string([not: ?)], min: 1))
+    |> ignore(string(")"))
+
   md_italic =
     ignore(string("_"))
     |> concat(tag)
@@ -63,9 +69,7 @@ defmodule Yaki.Parser do
   md_image =
     ignore(string("!"))
     |> concat(md_block)
-    |> ignore(string("("))
-    |> concat(tag)
-    |> ignore(string(")"))
+    |> concat(md_bloco)
     |> tag(:image)
 
   md_bold =
@@ -76,9 +80,7 @@ defmodule Yaki.Parser do
 
   md_link =
     md_block
-    |> ignore(string("("))
-    |> concat(tag)
-    |> ignore(string(")"))
+    |> concat(md_bloco)
     |> tag(:link)
 
   text = ascii_string([not: ?\n], min: 1) |> tag(:paragraph)

@@ -1,0 +1,17 @@
+<section class="phx-hero">
+  <div class="slides">
+    <%= for {page, inx} <-  Enum.with_index(@pages) do %>
+      <%= link(to: "/slide/#{inx + 1}") do%>
+        <div class="item" >
+          <div class="page" ></div>
+          <%= page %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div>
+    <%= for item <- @content do %>
+      <%= raw item %>
+    <% end %>
+  </div>
+</section>
