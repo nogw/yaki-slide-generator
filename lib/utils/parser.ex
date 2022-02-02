@@ -6,6 +6,7 @@ defmodule Yaki.Parser do
 
   spacechar = utf8_char([@space, @tab])
   sp = optional(times(spacechar, min: 1))
+  tag = ascii_string([?a..?z, ?A..?Z], min: 1)
 
   non_indented_space =
     [@space]
@@ -29,39 +30,43 @@ defmodule Yaki.Parser do
     |> choice([
       ascii_char([?\n]),
       eos()
-  ])
+    ])
 
   heading =
     atx_start
     |> choice([
-    [?\n] |> ascii_char() |> ignore(),
-    [@space]
-    |> utf8_char()
-    |> ignore()
-    |> repeat([not: ?\n] |> utf8_char() |> lookahead_not(string(" #")))
-    |> optional([not: ?\n, not: ?\s] |> utf8_char() |> ignore(atx_end))
-    |> optional(ascii_char([?\n]))
-    |> reduce({List, :to_string, []})
-    |> reduce(:trim)
-  ]) |> tag(:heading)
+      [?\n] |> ascii_char() |> ignore(),
+      [@space]
+      |> utf8_char()
+      |> ignore()
+      |> repeat([not: ?\n] |> utf8_char() |> lookahead_not(string(" #")))
+      |> optional([not: ?\n, not: ?\s] |> utf8_char() |> ignore(atx_end))
+      |> optional(ascii_char([?\n]))
+      |> reduce({List, :to_string, []})
+      |> reduce(:trim)
+    ])
+    |> tag(:heading)
 
   defp trim([string]), do: String.trim(string)
 
-  tag = ascii_string([?a..?z, ?A..?Z], min: 1)
-
-  md_image =
-    ignore(string("!["))
-    |> concat(tag)
-    |> ignore(string("]("))
-    |> concat(tag)
-    |> ignore(string(")"))
-    |> tag(:image)
+  md_block =
+    ignore(string("["))
+    |> concat(ascii_string([not: ?]], min: 1))
+    |> ignore(string("]"))
 
   md_italic =
     ignore(string("_"))
     |> concat(tag)
     |> ignore(string("_"))
     |> tag(:italic)
+
+  md_image =
+    ignore(string("!"))
+    |> concat(md_block)
+    |> ignore(string("("))
+    |> concat(tag)
+    |> ignore(string(")"))
+    |> tag(:image)
 
   md_bold =
     ignore(string("*"))
@@ -70,15 +75,13 @@ defmodule Yaki.Parser do
     |> tag(:bold)
 
   md_link =
-    ignore(string("["))
-    |> concat(tag)
-    |> ignore(string("]("))
+    md_block
+    |> ignore(string("("))
     |> concat(tag)
     |> ignore(string(")"))
     |> tag(:link)
 
-  text =
-    ascii_string([not: ?\n], min: 1) |> tag(:paragraph)
+  text = ascii_string([not: ?\n], min: 1) |> tag(:paragraph)
 
   defparsec(:from_md, choice([md_image, md_italic, md_bold, md_link, heading, atx_end, text]))
 end

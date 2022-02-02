@@ -1,6 +1,8 @@
 # My Project
-*teste*
-*oomaga*
+
+_teste_
+_oomaga_
 ![imageofnic](image)
-[nics](http)"
-ye another text
+teste teste
+[nics](http)
+[image of nic](image)

@@ -8,14 +8,16 @@ defmodule Yaki do
     Yaki.Generate.to_html(a, b)
   end
 
-  def getFiles do
-    files = Path.wildcard("./templates/*.md")
-
-    for file <- files do
-      IO.puts("\nfile: #{file}\n")
-      File.stream!(file)
-      |> Stream.map(fn (line) -> String.trim(line) |> convertToHtml end)
-      |> Stream.run
-    end
+  def getLines(file) do
+    {:ok, contents} = File.read(file)
+    String.split(contents, "\n", trim: true)
   end
+
+  def getFiles, do: Path.wildcard("./templates/*.md")
 end
+
+Yaki.getFiles()
+  |> Enum.map(&Yaki.getLines/1)
+  |> Enum.at(1)
+  |> Enum.map(&Yaki.Parser.from_md/1)
+  |> IO.inspect()
