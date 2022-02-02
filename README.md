@@ -1,3 +1,3 @@
 # yaki-slide-generator
 
-🎠 Generate slides from markdown
+## 🎠 Generate slides from markdown
