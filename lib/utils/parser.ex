@@ -1,4 +1,4 @@
-defmodule SlidesWeb.Parser do
+defmodule Slides.Parser do
   import NimbleParsec
 
   @space 0x0020
@@ -50,16 +50,6 @@ defmodule SlidesWeb.Parser do
 
   defp trim([string]), do: String.trim(string)
 
-  md_block =
-    ignore(string("["))
-    |> concat(ascii_string([not: ?]], min: 1))
-    |> ignore(string("]"))
-
-  md_bloco =
-    ignore(string("("))
-    |> concat(ascii_string([not: ?)], min: 1))
-    |> ignore(string(")"))
-
   md_italic =
     ignore(string("_"))
     |> concat(tag)
@@ -67,21 +57,20 @@ defmodule SlidesWeb.Parser do
     |> tag(:italic)
 
   md_image =
-    ignore(string("!"))
-    |> concat(md_block)
-    |> concat(md_bloco)
+    Slides.Utils.around("![", "]", ?])
+    |> concat(Slides.Utils.around("(", ")", ?)))
     |> tag(:image)
+
+  md_link =
+    Slides.Utils.around("[", "]", ?])
+    |> concat(Slides.Utils.around("(", ")", ?)))
+    |> tag(:link)
 
   md_bold =
     ignore(string("*"))
     |> concat(tag)
     |> ignore(string("*"))
     |> tag(:bold)
-
-  md_link =
-    md_block
-    |> concat(md_bloco)
-    |> tag(:link)
 
   text = ascii_string([not: ?\n], min: 1) |> tag(:paragraph)
 

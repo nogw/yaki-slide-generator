@@ -1,12 +1,12 @@
 defmodule SlidesWeb.Core do
   def convertToHtml(input) do
     md =
-      SlidesWeb.Parser.from_md(input)
+      Slides.Parser.from_md(input)
       |> elem(1)
       |> Enum.at(0)
 
     {a, b} = md
-    SlidesWeb.Generate.to_html(a, b)
+    Slides.Generate.to_html(a, b)
   end
 
   def getLines(file) do

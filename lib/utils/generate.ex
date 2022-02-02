@@ -1,4 +1,4 @@
-defmodule SlidesWeb.Generate do
+defmodule Slides.Generate do
   def to_html(type, content) do
     case {type, content} do
       {:heading, [{_, n}, b]} -> "<h#{n}>#{b}</h#{n}>"
