@@ -15,18 +15,17 @@ defmodule SlidesWeb.IndexLive do
     {:ok,
      assign(
        socket,
-       slide: 0,
+       slide: 1,
        content: content,
        pages: pages,
-       isOpen: true,
+       isOpen: false,
        error: ""
      )}
   end
 
   @impl true
   def handle_event("change_slide", %{"ref" => ref}, socket) do
-    IO.puts(ref)
-    {:noreply, assign(socket, content: getContent(ref))}
+    {:noreply, assign(socket, content: getContent(ref), slide: String.to_integer(ref))}
   end
 
   def handle_event("toggle_menu", _, socket) do

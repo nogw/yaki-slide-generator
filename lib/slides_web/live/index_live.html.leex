@@ -1,20 +1,13 @@
 <section class="phx-hero">
-  <button id="btn_open" phx-click="toggle_menu">open</button>
+  <img phx-click="toggle_menu" id="btn_open" src="/images/bars.svg"/>
   <div class="slides <%= if @isOpen, do: "open", else: "" %>">
-    <button id="btn_close" phx-click="toggle_menu">close</button>
+    <img id="btn_close" phx-click="toggle_menu" src="/images/times.svg"/>
     <%= for {page, inx} <- Enum.with_index(@pages) do %>
       <div phx-click="change_slide" phx-value-ref="<%= inx + 1 %>">
-        <%= if (inx + 1) == @slide do %>
-          <div class="item selected" >
-            <div class="page" ></div>
-            <%= page %>
-          </div>
-        <% else %>
-          <div class="item">
-            <div class="page" ></div>
-            <%= page %>
-          </div>
-        <% end %>
+        <div class="item<%= if (inx + 1) == @slide, do: " selected" %>">
+          <div class="page"></div>
+          <p><%= page %></p>
+        </div>
       </div>
     <% end %>
   </div>
@@ -24,12 +17,3 @@
     <% end %>
   </div>
 </section>
-
-<script>
-  const btn_open = document.getElementById("btn_open")
-  const btn_close = document.getElementById("btn_close")
-  const sidebar = document.querySelector(".slides")
-
-  btn_open.addEventListener("click", () => sidebar.classList.add("open"))
-  btn_close.addEventListener("click", () => sidebar.classList.remove("open"))
-</script>
