@@ -7,7 +7,7 @@ defmodule Slides.Generate do
       {:bold, [txt]} -> "<strong>#{txt}</strong>"
       {:paragraph, [txt]} -> "<p>#{txt}</p>"
       {:italic, [txt]} -> "<em>#{txt}</em>"
-      _ -> "sexo fail"
+      _ -> "failed to compile"
     end
   end
 end
