@@ -17,8 +17,6 @@ defmodule SlidesWeb.Router do
   scope "/", SlidesWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-
-    get "/slide/:slide", PageController, :slide
+    live "/", IndexLive, :index
   end
 end

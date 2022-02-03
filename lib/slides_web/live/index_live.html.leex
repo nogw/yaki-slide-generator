@@ -1,23 +1,21 @@
 <section class="phx-hero">
-  <button id="btn_open">open</button>
-
-  <div class="slides">
-    <button id="btn_close">close</button>
-
-    <%= for {page, inx} <-  Enum.with_index(@pages) do %>
-      <%= link(to: "/slide/#{inx + 1}") do%>
-        <%= if (inx + 1) == String.to_integer(@slide) do %>
+  <button id="btn_open" phx-click="toggle_menu">open</button>
+  <div class="slides <%= if @isOpen, do: "open", else: "" %>">
+    <button id="btn_close" phx-click="toggle_menu">close</button>
+    <%= for {page, inx} <- Enum.with_index(@pages) do %>
+      <div phx-click="change_slide" phx-value-ref="<%= inx + 1 %>">
+        <%= if (inx + 1) == @slide do %>
           <div class="item selected" >
             <div class="page" ></div>
             <%= page %>
           </div>
         <% else %>
-          <div class="item" >
+          <div class="item">
             <div class="page" ></div>
             <%= page %>
           </div>
         <% end %>
-      <% end %>
+      </div>
     <% end %>
   </div>
   <div>
