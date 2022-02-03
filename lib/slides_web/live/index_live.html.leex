@@ -1,4 +1,4 @@
-<section class="phx-hero">
+<section class="phx-hero" phx-window-keyup="key_change_slide">
   <img phx-click="toggle_menu" id="btn_open" src="/images/bars.svg"/>
   <div class="slides <%= if @isOpen, do: "open", else: "" %>">
     <img id="btn_close" phx-click="toggle_menu" src="/images/times.svg"/>
