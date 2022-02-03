@@ -1,6 +1,1 @@
-# My Project
-how to make better slides?
-[learn here](https://somelink.com)
-*test*
-*oomaga*
-![any image](image)
+![firefox](chrome://branding/content/about-logo.png)
